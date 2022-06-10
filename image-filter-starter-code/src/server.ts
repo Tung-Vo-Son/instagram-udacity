@@ -29,14 +29,15 @@ import fs from "fs";
 
   /**************************************************************************** */
   
-  app.get("/filteredimage", async(req, res) => {
+  app.get("/filteredimage", async(req:Request, res:Response) => {
     try {
-      const {image_url} = req.query;
-      const image = await filterImageFromURL(image_url);
-      res.sendFile(image);
-      
-      if(!image_url) {
-        res.status(400).send("No image link found")
+      const {image_url} = req.query.image_url;
+      if(!image_url.endsWith(".jpg")) {
+        res.status(400).send("No image link found");
+      }
+      else {
+        const image = await filterImageFromURL(image_url);
+        res.sendFile(image, () => deleteLocalFiles([image]));
       }
     } catch (error) {
       console.log(error);
