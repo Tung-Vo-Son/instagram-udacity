@@ -31,7 +31,7 @@ import fs from "fs";
   
   app.get("/filteredimage", async(req:Request, res:Response) => {
     try {
-      const {image_url} = req.query.image_url;
+      const {image_url} = req.query;
       if(!image_url.endsWith(".jpg")) {
         res.status(400).send("No image link found");
       }
